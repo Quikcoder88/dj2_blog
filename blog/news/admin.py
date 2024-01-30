@@ -1,7 +1,20 @@
 from django.contrib import admin
-from .models import News, Category, Tag
+from .models import News, Category, Tag, Comments
+from django_summernote.admin import SummernoteModelAdmin
 
 
-admin.site.register(News)
+class NewsAdmin(SummernoteModelAdmin):
+    summer_note_fields = ('text_min', 'text')
+
+
+
+admin.site.register(News, NewsAdmin)
 admin.site.register(Category)
 admin.site.register(Tag)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'new', 'created', 'moderation')
+
+
+admin.site.register(Comments, CommentAdmin)
