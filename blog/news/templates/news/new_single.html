@@ -10,12 +10,15 @@
 
     <h1>{{ new.title }}</h1>
     <p>{{ new.text | safe }}</p><hr>
+
+
     Категория: {{ new.category }}<br>
     Тэги: {% for tag in new.tags.all %}
         {{ tag.title }}
     {% endfor %} <br>
     Автор: {{ new.user }} - {{ new.created }}  <hr>
 
+    <h4>Комментарии</h4>
     {% for comment in comments %}
         Пользователь: {{ comment.user }} <br>
         {{ comment.text }} <br>
@@ -27,10 +30,18 @@
 <!--        Добавлен: {{ comment.created }} <br><br>-->
 <!--    {% endfor %}-->
 
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Отправить</button>
-    </form>
+
+<!--Сделаем так, чтобы комментарий мог оставлять только пользователь,-->
+<!--зарегистрировавшийся или авторизовавшийся на сайте-->
+
+    {% if user.is_active %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <h4>Чтобы оставить комментарий, авторизуйтесь!</h4>
+    {% endif %}
 
 {% endblock content %}
